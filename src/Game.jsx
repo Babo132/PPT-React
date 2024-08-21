@@ -3,7 +3,7 @@ import { SocketContext } from "./context/SocketContext";
 
 const options = [
   { id: 0, name: "Piedra", emoji: "🪨", beats: 2 },
-  { id: 1, name: "Papel",  emoji: "📄", beats: 0 },
+  { id: 1, name: "Papel", emoji: "📄", beats: 0 },
   { id: 2, name: "Tijera", emoji: "✂️", beats: 1 },
 ];
 
@@ -43,7 +43,7 @@ function useChoices() {
       setEspera(true);
     });
 
-    socket.on("resultado", (result) =>{
+    socket.on("resultado", (result) => {
       setResult(result);
     })
 
@@ -161,7 +161,7 @@ export default function Game() {
                 className="bg-yellow-500 hover:bg-yellow-700 text-black font-semibold py-2 px-4 mt-4 border-b-4 border-yellow-700"
                 onClick={reset}
               >
-                Jugar de nuevo
+                SALIR SALA
               </button>)}
             </div>
           )}
@@ -175,7 +175,7 @@ export default function Game() {
           )}
         </p>
       </div>)}
-      {espera && ("espera en fila perro") }
-    </div>  
+      {espera && ("espera en fila perro")}
+    </div>
   );
 }
