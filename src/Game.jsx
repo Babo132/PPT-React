@@ -3,7 +3,7 @@ import { SocketContext } from "./context/SocketContext";
 
 const options = [
   { id: 0, name: "Piedra", emoji: "🪨", beats: 2 },
-  { id: 1, name: "Papel", emoji: "📄", beats: 0 },
+  { id: 1, name: "Papel",  emoji: "📄", beats: 0 },
   { id: 2, name: "Tijera", emoji: "✂️", beats: 1 },
 ];
 
@@ -28,6 +28,7 @@ function useChoices() {
   const [result, setResult] = useState(null);
   const [disabled, setDisabled] = useState(false);
   const [espera, setEspera] = useState(false);
+  const [disconnect, setDisconnect] = useState(false);
   const { socket } = useContext(SocketContext);
 
   useEffect(() => {
@@ -43,7 +44,12 @@ function useChoices() {
       setEspera(true);
     });
 
-    socket.on("resultado", (result) => {
+    socket.on("disconnect", () => {
+      console.log("Fuera de sala");
+      setDisconnect(true);
+    });
+
+    socket.on("resultado", (result) =>{
       setResult(result);
     })
 
@@ -90,6 +96,7 @@ function useChoices() {
     setOpponentMessage(null);
     setResult(null);
     setDisabled(false);
+    setDisconnect(false);
   };
 
   return {
@@ -99,6 +106,7 @@ function useChoices() {
     opponentMessage,
     result,
     disabled,
+    disconnect,
     espera,
     handlePlay,
     reset,
@@ -115,6 +123,7 @@ export default function Game() {
     result,
     espera,
     disabled,
+    disconnect,
     handlePlay,
     reset,
   } = useChoices();
@@ -159,9 +168,9 @@ export default function Game() {
               </button>)}
               {result && (<button
                 className="bg-yellow-500 hover:bg-yellow-700 text-black font-semibold py-2 px-4 mt-4 border-b-4 border-yellow-700"
-                onClick={reset}
+                onClick={disconnect}
               >
-                SALIR SALA
+                Salir de sala
               </button>)}
             </div>
           )}
@@ -175,7 +184,9 @@ export default function Game() {
           )}
         </p>
       </div>)}
-      {espera && ("espera en fila perro")}
-    </div>
+      <div className="text-white">
+      {espera && ("Esperando jugador 2") }
+      </div>
+    </div>  
   );
 }
