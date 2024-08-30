@@ -171,19 +171,26 @@ function useChoices() {
   const QuiereJugar = (partida, salaId = null) => {
     setJugar(partida);
     if (partida === true) {
+      setUserChoice(null);
+      setOpponentChoice(null);
+      setUserMessage(null);
+      setOpponentMessage(null);
+      setResult(null);
+      setDisabled(false);
+      setDisconnect(false);
       socket.emit("Quiere-jugar");
     } else if (partida === false && salaId) {
+      reset();
       console.log("SI QUIERE VER EL WEY");
       setVer(true)
       console.log("SI QUIERE VER EL WEY 2");
       socket.on("jugada-ver", (choice) =>{
-        console.log(choice);
-        console.log("hola");
-        
+        console.log(choice);       
         
       })
       
       setSalaSeleccionada(salaId);
+      reset();
       
       socket.emit("ver", salaId);
     } else {
@@ -216,6 +223,7 @@ function useChoices() {
     jugar,
     puedeJugar,
     disconnect,
+    setUserChoice,
     handlePlay,
     QuiereJugar,
     salasActivas,
@@ -235,6 +243,7 @@ export default function Game() {
     ver,
     jugar,
     puedeJugar,
+    setUserChoice,
     QuiereJugar,
     disconnect,
     handlePlay,
@@ -259,7 +268,8 @@ export default function Game() {
             <div className="flex items-center justify-center mt-8 gap-8">
               <button
                 className="bg-yellow-500 hover:bg-yellow-700 text-black font-semibold py-2 px-4 mt-4 border-b-4 border-yellow-700"
-                onClick={() => QuiereJugar(true)}
+                onClick={() =>{ QuiereJugar(true); setUserChoice(null)}}
+
               >
                 Unirme a sala
               </button>
